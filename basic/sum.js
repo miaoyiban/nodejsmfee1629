@@ -1,11 +1,9 @@
 console.log("Hello");
 function sum(n){
-    let sum=0;
-    for(let i=1;i<=n;i++){
-        sum+=i
-    }
+    
+    let total = n*(n+1)/2;
 
-    return sum
+    return total
 }
 console.log(sum(1)); // 1
 console.log(sum(2)); // 3
