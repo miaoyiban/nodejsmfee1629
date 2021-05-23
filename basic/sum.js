@@ -1,9 +1,9 @@
 console.log("Hello");
 
 function sum(n) {
-	let total = (n * (n + 1)) / 2;
+	return (n * (n + 1)) / 2;
 
-	return total;
+	
 }
 console.log(sum(1)); // 1
 console.log(sum(2)); // 3
