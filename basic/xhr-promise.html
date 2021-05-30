@@ -30,8 +30,7 @@
 				xhr.open("GET", "http://34.217.120.25:3000/", true);
 				xhr.onload = function () {
 					// console.log(this.responseText);
-                    resolve(this.responseText);
-					
+					resolve(this.responseText);
 				};
 				xhr.send();
 			});
@@ -40,8 +39,8 @@
 		asyncBtn.addEventListener("click", function () {
 			xhrPromise()
 				.then((result) => {
-                    message.innerText = `非同步請求 load ${this.responseText}`;
-                })
+					message.innerText = `非同步請求 load ${result}`;
+				})
 				.catch((error) => {});
 			// var xhr = new XMLHttpRequest();
 			// xhr.open("GET", "http://34.217.120.25:3000/", true);
