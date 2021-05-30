@@ -20,27 +20,38 @@ function rFPromise() {
 	});
 }
 
+let date=new Date();
+// console.log(date);
+let year =date.getFullYear()
+// console.log(year)
+let month = (date.getMonth() + 1 < 10 ? "0" : "") + (date.getMonth() + 1);
+// console.log(month);
+let day = (date.getDate() + 1 < 10 ? "0" : "") + date.getDate() ;
+// console.log(day)
+let fullDate=year+month+day
+// console.log(fullDate)
+
 rFPromise().then((result) => {
 	// console.log(result);
-    axios
-			.get("https://www.twse.com.tw/exchangeReport/STOCK_DAY", {
-				params: {
-					response: "json",
-					date: "20210529",
-					stockNo: result,
-				},
-			})
-			.then(function (response) {
-				// handle success
-				console.log(response.data.title);
-			})
-			.catch(function (error) {
-				// handle error
-				console.log(error);
-			})
-			.then(function () {
-				// always executed
-			});
+     return axios
+				.get("https://www.twse.com.tw/exchangeReport/STOCK_DAY", {
+					params: {
+						response: "json",
+						date: fullDate,
+						stockNo: result,
+					},
+				})
+				.then(function (response) {
+					// handle success
+					console.log(response.data.title);
+				})
+				.catch(function (error) {
+					// handle error
+					console.log(error);
+				})
+				.then(function () {
+					// always executed
+				});
 
 });
 
