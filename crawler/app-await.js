@@ -39,7 +39,7 @@ async function clawer() {
 			{
 				params: {
 					response: "json",
-					date: "20210529",
+					date: fullDate,
 					stockNo: rfResult,
 				},
 			}
