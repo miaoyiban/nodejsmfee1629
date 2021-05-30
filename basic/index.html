@@ -24,24 +24,24 @@
 			count.innerText = parseInt(count.innerText, 10) + 1;
 		});
 
-        asyncBtn.addEventListener("click",function(){
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET","http://34.217.120.25:3000/", true);
-            xhr.onload = function(){
-                console.log(this.responseText)
-                message.innerText = `非同步請求 load ${this.responseText}`
-            }
-            xhr.send()
-        })
+		asyncBtn.addEventListener("click", function () {
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET", "http://34.217.120.25:3000/", true);
+			xhr.onload = function () {
+				console.log(this.responseText);
+				message.innerText = `非同步請求 load ${this.responseText}`;
+			};
+			xhr.send();
+		});
 
-        syncBtn.addEventListener("click",function(){
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET","http://34.217.120.25:3000/", false);
-            xhr.onload = function(){
-                console.log(this.responseText)
-                message.innerText = `同步請求 load ${this.responseText}`
-            }
-            xhr.send()
-        })
+		syncBtn.addEventListener("click", function () {
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET", "http://34.217.120.25:3000/", false);
+			xhr.onload = function () {
+				console.log(this.responseText);
+				message.innerText = `同步請求 load ${this.responseText}`;
+			};
+			xhr.send();
+		});
 	</script>
 </html>
