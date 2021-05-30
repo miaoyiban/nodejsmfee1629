@@ -13,7 +13,7 @@ function rFPromise() {
 		const fs = require("fs");
 		fs.readFile("stock.txt", "utf8", (err, data) => {
 			if (err) {
-				reject("讀檔錯誤", err);
+				reject(err);
 			}
 			resolve(data);
 		});
@@ -32,27 +32,21 @@ let fullDate=year+month+day
 // console.log(fullDate)
 
 rFPromise().then((result) => {
-	// console.log(result);
-     return axios
-				.get("https://www.twse.com.tw/exchangeReport/STOCK_DAY", {
-					params: {
-						response: "json",
-						date: fullDate,
-						stockNo: result,
-					},
-				})
-				.then(function (response) {
-					// handle success
-					console.log(response.data.title);
-				})
-				.catch(function (error) {
-					// handle error
-					console.log(error);
-				})
-				.then(function () {
-					// always executed
-				});
-
+	console.log(result);
+    
+    return axios.get("https://www.twse.com.tw/exchangeReport/STOCK_DAY", {
+			params: {
+				response: "json",
+				date: fullDate,
+				stockNo: result,
+			},
+		});
+})
+.then((response=>{
+    console.log(response.data.title);
+}))
+.catch((err)=>{
+    console.error(err)
 });
 
 // axios
