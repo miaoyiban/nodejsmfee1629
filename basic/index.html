@@ -27,7 +27,7 @@
         asyncBtn.addEventListener("click",function(){
             var xhr = new XMLHttpRequest();
             xhr.open("GET","http://34.217.120.25:3000/", true);
-            xhr.onload = function(response){
+            xhr.onload = function(){
                 console.log(this.responseText)
                 message.innerText = `非同步請求 load ${this.responseText}`
             }
