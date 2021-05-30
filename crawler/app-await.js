@@ -7,6 +7,10 @@
 const { rejects } = require("assert");
 const axios = require("axios");
 //fs=filesystem，不用安裝node內建
+const moment = require("moment");
+// console.log(moment().format("YYYYMMDD"))
+
+// return;
 
 function rFPromise() {
 	return new Promise((resolve, reject) => {
@@ -20,15 +24,15 @@ function rFPromise() {
 	});
 }
 
-let date = new Date();
+// let date = new Date();
 // console.log(date);
-let year = date.getFullYear();
+// let year = date.getFullYear();
 // console.log(year)
-let month = (date.getMonth() + 1 < 10 ? "0" : "") + (date.getMonth() + 1);
+// let month = (date.getMonth() + 1 < 10 ? "0" : "") + (date.getMonth() + 1);
 // console.log(month);
-let day = (date.getDate() + 1 < 10 ? "0" : "") + date.getDate();
+// let day = (date.getDate() + 1 < 10 ? "0" : "") + date.getDate();
 // console.log(day)
-let fullDate = year + month + day;
+// let fullDate = year + month + day;
 // console.log(fullDate)
 
 async function clawer() {
@@ -39,12 +43,17 @@ async function clawer() {
 			{
 				params: {
 					response: "json",
-					date: fullDate,
+					date: moment().format("YYYYMMDD"),
 					stockNo: rfResult,
 				},
 			}
 		);
-        console.log(axResult.data.title)
+        if (axResult.data.stat === "OK"){
+            console.log(axResult.data.title)
+        }else{
+
+        }
+        
 	} catch (err) {
 		console.log(err);
 	}
