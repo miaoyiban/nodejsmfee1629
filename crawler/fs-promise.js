@@ -25,17 +25,24 @@ connection = Promise.promisifyAll(connection);
 					let response = await axios.get(
 						`https://www.twse.com.tw/zh/api/codeQuery?query=${stockCode}`
 					);
-					let answer = response.data.suggestions.shift();
-					let answers = answer.split("\t");
-					if (answers.length > 1) {
+					let answer = response.data.suggestions
+                    .map((item)=>{
+                        return item.split("\t");
+                    })
+                    .find((item)=>{
+                        return item[0] === stockCode
+                    });
+                    // console.log(answer)
+					
+					if (answer.length > 1) {
 						connection.queryAsync(
-							`INSERT INTO stock (stock_id, stock_name) VALUES ('${answers[0]}','${answers[1]}') `
+							`INSERT INTO stock (stock_id, stock_name) VALUES ('${answer[0]}','${answer[1]}') `
 						);
                         console.log("進資料庫")
 					}
 				}
     }catch(err){
-        console.err(err)
+        console.log(err)
 
     }finally{
         connection.end();
