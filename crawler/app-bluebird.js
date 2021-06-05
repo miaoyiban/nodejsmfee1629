@@ -2,10 +2,7 @@ const axios = require("axios");
 const fs = require("fs");
 const moment = require("moment");
 const Promise = require("bluebird");
-// console.log(Promise)
 
-// console.log(moment().format()); // 2021-05-30T13:45:06+08:00
-// console.log(moment().format("YYYYMMDD")); // 20210530
 
 // 因為用bluebird所以不用自己包
 // function readFilePromise() {
