@@ -2,13 +2,14 @@ const axios = require("axios");
 const fs = require("fs/promises");
 const moment = require("moment");
 const Promise = require("bluebird");
+require("dotenv").config();
 
 const mysql = require("mysql");
 let connection = mysql.createConnection({
-	host: "localhost",
-	user: "root",
-	password: "MFEE1629",
-	database: "stock",
+	host: process.env.DB_HOST,
+	user: process.env.DB_USER,
+	password: process.env.DB_PASSWORD,
+	database: process.env.DB_NAME,
 });
 connection = Promise.promisifyAll(connection);
 
@@ -32,7 +33,11 @@ connection = Promise.promisifyAll(connection);
                     .find((item)=>{
                         return item[0] === stockCode
                     });
-                    // console.log(answer)
+					console.log(response.data.suggestions);
+                    console.log("股票資料:",answer)
+					if (answer === undefined){
+						throw "沒有符合的代碼"
+					}
 					
 					if (answer.length > 1) {
 						connection.queryAsync(
@@ -42,7 +47,7 @@ connection = Promise.promisifyAll(connection);
 					}
 				}
     }catch(err){
-        console.log(err)
+        console.error(err)
 
     }finally{
         connection.end();
