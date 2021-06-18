@@ -1,0 +1,5 @@
+const car = require("./car")
+console.log(car)
+console.log(car.getColor())
+car.setColor("purple")
+console.log(car.getColor())
