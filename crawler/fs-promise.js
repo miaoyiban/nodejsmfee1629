@@ -12,6 +12,8 @@ let connection = mysql.createConnection({
 	database: process.env.DB_NAME,
 });
 connection = Promise.promisifyAll(connection);
+// console.log(connection)
+// return;
 
 (async function(){
     try{

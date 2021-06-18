@@ -1,5 +1,9 @@
 const express = require("express");
+const { connect } = require("../myweb/routes");
+const connection  = require("./utils/db");
+const Promise = require("bluebird");
 let app = express();
+
 
 // 可以指定一個或多個目錄是靜態資源目錄
 // 自動幫你為public裡面的檔案建立路由
@@ -32,6 +36,14 @@ app.get("/test", function (req, res) {
     
 });
 
-app.listen(3000,()=>{
+app.get("/stock",async (req, res)=>{
+    let queryResults = await connection.queryAsync("SELECT * FROM stock;")
+    res.render("stock/list", {
+			stocks: queryResults,
+		});
+})
+
+app.listen(3000,async()=>{
+    await connection.connectAsync();
     console.log(`我跑起來了，在port 3000`)
 })
