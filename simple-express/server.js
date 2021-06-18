@@ -5,6 +5,10 @@ let app = express();
 // 自動幫你為public裡面的檔案建立路由
 app.use(express.static("public"))
 
+// 第一個變數 views 第二個是檔案名稱
+app.set("views","views");
+app.set("view engine","pug");
+
 // 中間件 middleware
 app.use(function(req, res, next){
     let current = new Date();
@@ -17,10 +21,11 @@ app.use(function(req, res, next){
 
 // 路由
 app.get("/",function(req,res){
-    res.send("Hello Express");
+    res.render("index")
+    // views/index.pug
 })
 app.get("/about", function (req, res) {
-	res.send("About Express");
+	res.render("about")
 });
 app.get("/test", function (req, res) {
 	res.send("test Express");
