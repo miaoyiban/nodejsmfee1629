@@ -9,13 +9,14 @@ router.get("/", async (req, res) => {
 	});
 });
 
-router.get("/:stockCode", async (req, res) => {
+router.get("/:stockCode", async (req, res, next) => {
 	let stock = await connection.queryAsync(
 		"SELECT * FROM stock WHERE stock_id=?;",
 		req.params.stockCode
 	);
 	if (stock.length === 0) {
-		throw new Error("查無代碼");
+		// throw new Error("查無代碼");
+        next(); //-->一直往下跑 落入404
 	}
 	stock = stock[0];
 
