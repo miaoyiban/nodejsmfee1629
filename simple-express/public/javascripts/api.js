@@ -16,7 +16,7 @@ $(function(){
     axios
 			.get("/api/stocks")
 			.then(function (response) {
-				console.log(response);
+				console.log(response.data);
 			})
 			.catch(function (error) {
 				// handle error
