@@ -16,7 +16,10 @@ h1 {
 	padding: 2%;
 	color: #185875;
 }
-
+a{
+	color: #185875;
+	text-decoration: none;
+}
 tbody tr:nth-child(even) {
 	background: #f5f7fa;
 }
