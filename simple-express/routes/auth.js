@@ -35,6 +35,13 @@ const uploader = multer({
 });
 
 router.get("/register", (req, res) => {
+	if (req.session.member) {
+		req.session.message = {
+			title: "重複登入",
+			text: "不需要再次註冊",
+		};
+		return res.redirect(303, "/member");
+	}
 	res.render("auth/register");
 });
 
@@ -60,7 +67,13 @@ router.post(
 		const validatResult = validationResult(req);
 		// console.log(validationResul)
 		if (!validatResult.isEmpty()) {
-			return next(new Error("註冊表單有問題"));
+			// return next(new Error("註冊表單有問題"));
+			let error = validatResult.array();
+			req.session.message = {
+				title: "資料錯誤",
+				text: error[0].msg,
+			};
+			return res.redirect(303, "/auth/register");
 		}
 
 		// 先檢查是否註冊過
@@ -91,6 +104,13 @@ router.post(
 );
 
 router.get("/login", (req, res) => {
+	if (req.session.member) {
+		req.session.message = {
+			title: "重複登入",
+			text: "你已經登入過了",
+		};
+		return res.redirect(303, "/member");
+	}
 	res.render("auth/login");
 });
 
@@ -105,7 +125,13 @@ router.post("/login", loginRules, async (req, res, next) => {
 	const validatResult = validationResult(req);
 	// console.log(validationResul)
 	if (!validatResult.isEmpty()) {
-		return next(new Error("登入表單有問題"));
+		// return next(new Error("登入表單有問題"));
+		let error = validatResult.array();
+		req.session.message = {
+			title: "登入錯誤",
+			text: error[0].msg,
+		};
+		return res.redirect(303, "/auth/login");
 	}
 
 	// 檢查email存不存在
@@ -114,7 +140,11 @@ router.post("/login", loginRules, async (req, res, next) => {
 		req.body.email
 	);
 	if (member.length === 0) {
-		return next(new Error("查無此帳號"));
+		req.session.message = {
+			title: "登入錯誤",
+			text: "查無此帳號",
+		};
+		return res.redirect(303, "/auth/login");
 	}
 
 	member = member[0];
@@ -128,17 +158,33 @@ router.post("/login", loginRules, async (req, res, next) => {
 			name: member.name,
 			photo: member.photo,
 		};
+		req.session.message = {
+			title: "登入成功",
+			text: "歡迎回來",
+		};
 		res.redirect(303, "/");
 	} else {
 		req.session.member = null;
 
-		res.send("登入失敗");
+		// 處理訊息
+		req.session.message = {
+			title: "登入失敗",
+			text: "請填寫正確帳號密碼",
+		};
+		// 轉跳到登入頁面
+		res.redirect(303, "/auth/login");
 	}
 });
 
-router.get("/logout",(req,res)=>{
-    req.session.member=null;
-    res.redirect(303,"/")
-})
+router.get("/logout", (req, res) => {
+	req.session.member = null;
+	req.session.message = {
+		title: "已登出",
+		text: "歡迎再回來",
+	};
+	// 轉跳到登入頁面
+
+	res.redirect(303, "/");
+});
 
 module.exports = router;

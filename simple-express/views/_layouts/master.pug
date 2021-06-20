@@ -5,10 +5,20 @@ html
     meta(charset="utf-8")
     link(rel="stylesheet" href="/styles/main.css")
     script(src="https://code.jquery.com/jquery-3.6.0.min.js")
-    
+    //- 如果有message才引用
+    if message 
+        script(src="//cdn.jsdelivr.net/npm/sweetalert2@11") 
+
     block scripts 
 
     body 
         include header 
         block content 
         include footer 
+    
+    if message 
+        script.
+            Swal.fire({
+                title :"#{message.title}",
+                text :"#{message.text}"
+            })

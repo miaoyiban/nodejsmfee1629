@@ -39,6 +39,17 @@ app.use(function (req, res, next) {
 	next();
 });
 
+app.use(function (req, res, next) {
+	// 因為訊息只希望顯示一次
+	// 傳到views一次後就刪掉
+	if (req.session.message) {
+		res.locals.message = req.session.message;
+		delete req.session.message;
+	}
+	next();
+});
+
+
 // 中間件 middleware
 app.use(function (req, res, next) {
 	let current = new Date();
@@ -46,6 +57,7 @@ app.use(function (req, res, next) {
 	// 讓他往下繼續
 	next();
 });
+
 
 // 所有中間鍵底下
 
@@ -58,8 +70,8 @@ app.use("/api", apiRouter);
 let authRouter = require("./routes/auth");
 app.use("/auth", authRouter);
 
-let memberRouter = require("./routes/member")
-app.use("/member",memberRouter)
+let memberRouter = require("./routes/member");
+app.use("/member", memberRouter);
 
 // 路由
 app.get("/", function (req, res) {
