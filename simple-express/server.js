@@ -3,11 +3,26 @@ const { connect } = require("../myweb/routes");
 const connection = require("./utils/db");
 const Promise = require("bluebird");
 const { body, validationResult } = require("express-validator");
+require("dotenv").config();
 
 let app = express();
 
 // 加上這個中間鍵就能解讀POST的資料
 app.use(express.urlencoded({ extended: false }));
+// 前端送json data ,express才能解析
+app.use(express.json());
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
+
+// 處理session
+const expressSession = require("express-session");
+app.use(
+	expressSession({
+		secret: process.env.SESSION_SECRET,
+		resave: false,
+		saveUninitialized: false,
+	})
+);
 
 // 可以指定一個或多個目錄是靜態資源目錄
 // 自動幫你為public裡面的檔案建立路由
@@ -16,6 +31,13 @@ app.use(express.static("public"));
 // 第一個變數 views 第二個是檔案名稱
 app.set("views", "views");
 app.set("view engine", "pug");
+
+// 把req.seesion設定給res.locals
+app.use(function (req, res, next) {
+	// 把request的session資料設定給res的local
+	res.locals.member = req.session.member;
+	next();
+});
 
 // 中間件 middleware
 app.use(function (req, res, next) {
@@ -36,8 +58,13 @@ app.use("/api", apiRouter);
 let authRouter = require("./routes/auth");
 app.use("/auth", authRouter);
 
+let memberRouter = require("./routes/member")
+app.use("/member",memberRouter)
+
 // 路由
 app.get("/", function (req, res) {
+	res.cookie("lang", "zh-TW");
+
 	res.render("index");
 	// views/index.pug
 });

@@ -5,6 +5,7 @@ const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 const path = require("path");
 const multer = require("multer");
+
 // 設定上傳檔案儲存方式
 const myStorage = multer.diskStorage({
 	destination: function (req, file, cb) {
@@ -122,12 +123,22 @@ router.post("/login", loginRules, async (req, res, next) => {
 	// 必須用bcrypt提供的比對韓式
 	let result = await bcrypt.compare(req.body.password, member.password);
 	if (result) {
-		res.send("登入成功");
+		req.session.member = {
+			email: member.email,
+			name: member.name,
+			photo: member.photo,
+		};
+		res.redirect(303, "/");
 	} else {
+		req.session.member = null;
+
 		res.send("登入失敗");
 	}
-
-	
 });
+
+router.get("/logout",(req,res)=>{
+    req.session.member=null;
+    res.redirect(303,"/")
+})
 
 module.exports = router;
