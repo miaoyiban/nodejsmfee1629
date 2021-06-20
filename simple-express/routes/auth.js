@@ -23,9 +23,9 @@ router.post("/register", registerRules, async (req, res, next) => {
 	// 加上中間函式express.urlencoded({ extended: false })的設定就可以解讀post資料
 	console.log(req.body);
 
-	const validationResul = validationResult(req);
-	// console.log(validationResult)
-	if (!validationResul.isEmpty()) {
+	const validatResult = validationResult(req);
+	// console.log(validationResul)
+	if (!validatResult.isEmpty()) {
 		return next(new Error("註冊表單有問題"));
 	}
 
