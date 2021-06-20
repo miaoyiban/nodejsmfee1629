@@ -30,7 +30,7 @@ const uploader = multer({
 
 		cb(null, true);
 	},
-	limits:{fileSize:1024*1024}
+	limits: { fileSize: 1024 * 1024 },
 });
 
 router.get("/register", (req, res) => {
@@ -71,7 +71,7 @@ router.post(
 			return next(new Error("註冊過了"));
 		}
 
-        let filepath = req.file ? "/upload/" + req.file.filename : null;
+		let filepath = req.file ? "/upload/" + req.file.filename : null;
 
 		let result = await connection.queryAsync(
 			"INSERT INTO members (email, password, name, photo) VALUES (?)",
@@ -84,13 +84,50 @@ router.post(
 				],
 			]
 		);
-        
+
 		res.send("註冊成功");
 	}
 );
 
 router.get("/login", (req, res) => {
 	res.render("auth/login");
+});
+
+const loginRules = [
+	body("email").isEmail(),
+	body("password").isLength({ min: 6 }),
+];
+
+router.post("/login", loginRules, async (req, res, next) => {
+	console.log(req.body);
+
+	const validatResult = validationResult(req);
+	// console.log(validationResul)
+	if (!validatResult.isEmpty()) {
+		return next(new Error("登入表單有問題"));
+	}
+
+	// 檢查email存不存在
+	let member = await connection.queryAsync(
+		"SELECT * FROM members WHERE email=?",
+		req.body.email
+	);
+	if (member.length === 0) {
+		return next(new Error("查無此帳號"));
+	}
+
+	member = member[0];
+
+	// 因為bcrypt每次加密結果都不一樣，不能單純比對字串
+	// 必須用bcrypt提供的比對韓式
+	let result = await bcrypt.compare(req.body.password, member.password);
+	if (result) {
+		res.send("登入成功");
+	} else {
+		res.send("登入失敗");
+	}
+
+	
 });
 
 module.exports = router;
