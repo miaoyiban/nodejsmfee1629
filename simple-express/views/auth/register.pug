@@ -6,15 +6,15 @@ block content
   form.form#registerFrm(method="POST", action="/auth/register")
     div
       label(for="email") Email
-      input(name="email", type="mail")
+      input(name="email", type="mail" value="aaa@gmail.com")
     div
       label(for="password") 密碼
-      input(name="password", type="password")
+      input(name="password", type="password" value="bbbbbb")
     div
       label(for="confirmPassword") 確認密碼
-      input(name="confirmPassword", type="password")
+      input(name="confirmPassword", type="password" value="bbbbbb")
     div
       label(for="name") 姓名
-      input(name="name", type="text")
+      input(name="name", type="text" value="aaa")
     
     button(type="submit") 送出

@@ -2,7 +2,12 @@ const express = require("express");
 const { connect } = require("../myweb/routes");
 const connection = require("./utils/db");
 const Promise = require("bluebird");
+const { body, validationResult } = require("express-validator");
+
 let app = express();
+
+// 加上這個中間鍵就能解讀POST的資料
+app.use(express.urlencoded({ extended: false }));
 
 // 可以指定一個或多個目錄是靜態資源目錄
 // 自動幫你為public裡面的檔案建立路由
@@ -25,11 +30,11 @@ app.use(function (req, res, next) {
 let stockRouter = require("./routes/stock");
 app.use("/stock", stockRouter);
 
-let apiRouter = require("./routes/api")
-app.use("/api",apiRouter)
+let apiRouter = require("./routes/api");
+app.use("/api", apiRouter);
 
-let authRouter = require("./routes/auth")
-app.use("/auth",authRouter)
+let authRouter = require("./routes/auth");
+app.use("/auth", authRouter);
 
 // 路由
 app.get("/", function (req, res) {
@@ -56,11 +61,11 @@ app.use(function (req, res, next) {
 // 一定要有四個參數-->最後作錯誤處理
 // express的預設處理
 
-app.use(function(err, req, res, next){
+app.use(function (err, req, res, next) {
 	console.log(err.message);
-	res.status(500)
-	res.send("500 -Internal Sever Error 請洽系統管理員")
-})
+	res.status(500);
+	res.send("500 -Internal Sever Error 請洽系統管理員");
+});
 
 app.listen(3000, async () => {
 	await connection.connectAsync();
