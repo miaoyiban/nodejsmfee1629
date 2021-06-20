@@ -61,6 +61,7 @@ thead {
 }
 /* form */
 .form {
+  margin: 0 auto;
   width: 40%;
   border-radius: 5px;
   background-color: #f2f2f2;

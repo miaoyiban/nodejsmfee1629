@@ -21,9 +21,9 @@ const uploader = multer({
 	storage: myStorage,
 	fileFilter: function (req, file, cb) {
 		// console.log(file)
-		if (file.mimetype !== "image/jpeg") {
-			return cb(new Error("不合法", false));
-		}
+		// if (file.mimetype !== "image/jpeg") {
+		// 	return cb(new Error("不合法的file type", false));
+		// }
 		if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
 			return cb(new Error("不合格的附檔名", false));
 		}
@@ -54,7 +54,7 @@ router.post(
 	registerRules,
 	async (req, res, next) => {
 		// 加上中間函式express.urlencoded({ extended: false })的設定就可以解讀post資料
-		console.log(req.body);
+		// console.log(req.body);
 
 		const validatResult = validationResult(req);
 		// console.log(validationResul)
@@ -71,6 +71,8 @@ router.post(
 			return next(new Error("註冊過了"));
 		}
 
+        let filepath = req.file ? "/upload/" + req.file.filename : null;
+
 		let result = await connection.queryAsync(
 			"INSERT INTO members (email, password, name, photo) VALUES (?)",
 			[
@@ -78,11 +80,11 @@ router.post(
 					req.body.email,
 					await bcrypt.hash(req.body.password, 10),
 					req.body.name,
-					`/upload/${req.file.filename}`,
+					filepath,
 				],
 			]
 		);
-
+        
 		res.send("註冊成功");
 	}
 );
