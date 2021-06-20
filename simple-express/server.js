@@ -28,6 +28,9 @@ app.use("/stock", stockRouter);
 let apiRouter = require("./routes/api")
 app.use("/api",apiRouter)
 
+let authRouter = require("./routes/auth")
+app.use("/auth",authRouter)
+
 // 路由
 app.get("/", function (req, res) {
 	res.render("index");
@@ -51,6 +54,7 @@ app.use(function (req, res, next) {
 // 500 error
 // 放在所有路由後面
 // 一定要有四個參數-->最後作錯誤處理
+// express的預設處理
 
 app.use(function(err, req, res, next){
 	console.log(err.message);

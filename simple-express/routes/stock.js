@@ -16,7 +16,8 @@ router.get("/:stockCode", async (req, res, next) => {
 	);
 	if (stock.length === 0) {
 		// throw new Error("查無代碼");
-        next(); //-->一直往下跑 落入404
+        return next(); //-->落入下一個中間鍵
+		
 	}
 	stock = stock[0];
 
