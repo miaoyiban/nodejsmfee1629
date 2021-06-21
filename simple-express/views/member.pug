@@ -1,0 +1,16 @@
+extends _layouts/master
+
+block content
+    h1 會員中心
+
+    table.container
+        tbody 
+            tr 
+                td email 
+                td #{member.email}
+            tr
+                td 姓名
+                td #{member.name}
+
+    .avatar 
+        img(src=member.photo class="object-fit")

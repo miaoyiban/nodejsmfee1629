@@ -99,7 +99,7 @@ router.post(
 			]
 		);
 
-		res.send("註冊成功");
+		res.redirect(303, "/auth/login");
 	}
 );
 

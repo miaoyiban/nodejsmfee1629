@@ -49,7 +49,6 @@ app.use(function (req, res, next) {
 	next();
 });
 
-
 // 中間件 middleware
 app.use(function (req, res, next) {
 	let current = new Date();
@@ -57,7 +56,6 @@ app.use(function (req, res, next) {
 	// 讓他往下繼續
 	next();
 });
-
 
 // 所有中間鍵底下
 
